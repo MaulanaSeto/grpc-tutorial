@@ -3,13 +3,14 @@ use tokio::sync::mpsc;
 use tokio_stream::wrappers::ReceiverStream;
 use tokio::sync::mpsc::{Sender, Receiver}
 use tokio::io::{self, AsyncBufReadExt}
-use services::{payment_service_client::PaymentServiceClient, PaymentRequest,
-    transaction_service_client::TransactionServiceClient, TransactionRequest
-    chat_service_client::ChatServiceClient, ChatMessage};
 
 pub mod services {
     tonic::include_proto!("service");
 }
+
+use services::{payment_service_client::PaymentServiceClient, PaymentRequest,
+    transaction_service_client::TransactionServiceClient, TransactionRequest
+    chat_service_client::ChatServiceClient, ChatMessage};
 
 let channel = Channel::form_static("http://[::1]:50051").connect().await?;
 let mut client = ChatServiceClient::new(channel);
