@@ -11,7 +11,6 @@ use services::{payment_service_server::{PaymentService, PaymentServiceServer}, P
     transaction_service_server::{TransactionService, TransactionServiceServer}, TransactionRequest, TransactionResponse,
     chat_service_server::{ChatService, ChatServiceServer}, ChatMessage};
 
-
 #[derive(Default)]
 pub struct MyPaymentService {}
 
@@ -24,17 +23,6 @@ impl PaymentService for MyPaymentService {
         println!("Received payment request: {:?}", request);
         Ok(Response::new(PaymentResponse {success: true}))
     }
-}
-
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let addr = "{::1}:50051".parse()?;
-    let payment_service = MyPaymentService::default();
-    Server::builder()
-        .add_service(PaymentServiceCenter::new(payment_servicet))
-        .serve(addr)
-        .await?;
-    Ok(())
 }
 
 #[derive(Default)]
@@ -64,19 +52,6 @@ impl TransactionService for MyTransactionService {
         });
         Ok(Response::new(ReceiverStream::new(rx))
     }
-}
-
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error:Error>> {
-    let addr = "[::1]:50051".parse()?;
-    let payment_service = MyPaymentService::default();
-    let transaction_service = MyTransactionService::default();
-    Server::builder()
-        .add_service(PaymentServiceServer::new(payment_service))
-        .add_service(TransactionServiceServer::new(transaction_service))
-        .serve(addr)
-        .await?;
-    Ok(())
 }
 
 #[derive(Default)]
